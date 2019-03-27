@@ -1,0 +1,5 @@
+---
+- version: v1
+  group: operator.redhatgov.io
+  kind: Workshop
+  role: /opt/ansible/roles/workshop
