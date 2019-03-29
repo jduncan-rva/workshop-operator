@@ -16,7 +16,7 @@ spec:
       containers:
         - name: workshop-operator
           # Replace this with the built image name
-          image: "quay.io/jhocutt/workshop-operator:v0.0.1"
+          image: "quay.io/jduncan/workshop-operator:latest"
           imagePullPolicy: Always
           env:
             - name: WATCH_NAMESPACE
