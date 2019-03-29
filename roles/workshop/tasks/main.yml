@@ -1,2 +1,20 @@
 ---
-# tasks file for workshop
+
+- name: Create project
+  k8s:
+    name: "{{ meta.name }}"
+    api_version: v1
+    kind: Namespace
+
+- name: Create students
+  k8s:
+    definition:
+      apiVersion: operator.redhatgov.io/v1
+      kind: Student
+      metadata:
+        name: "{{ meta.name }}-{{ 'student%02x' | format(item) }}"
+        namespace: "{{ meta.namespace }}"
+      spec:
+        workshopName: "{{ meta.name }}"
+  loop: "{{ range(1, number_of_students + 1) | list }}"
+  when: number_of_students is defined

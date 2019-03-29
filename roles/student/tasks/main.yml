@@ -1,2 +1,75 @@
 ---
-# tasks file for student
+
+- name: Create project
+  k8s:
+    name: "{{ meta.name }}"
+    api_version: v1
+    kind: Namespace
+
+- name: Create lab guide deployment
+  k8s:
+    definition:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: lab-guide
+        namespace: "{{ meta.name }}"
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            name: lab-guide
+        template:
+          metadata:
+            labels:
+              name: lab-guide
+          spec:
+            containers:
+            - name: lab-guide
+              image: "{{ lab_guide_image }}"
+              imagePullPolicy: Always
+              env:
+              - name: STUDENT_NAME
+                value: "{{ meta.name }}"
+              - name: PROJECT_NAME
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.namespace
+              ports:
+              - containerPort: 8080
+                protocol: TCP
+            terminationGracePeriodSeconds: 5
+
+- name: Create lab guide service
+  k8s:
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: lab-guide
+        namespace: "{{ meta.name }}"
+      spec:
+        ports:
+        - name: 8080-tcp
+          port: 8080
+          protocol: TCP
+          targetPort: 8080
+        selector:
+          name: lab-guide
+        type: ClusterIP
+
+- name: Create lab guide route
+  k8s:
+    definition:
+      apiVersion: route.openshift.io/v1
+      kind: Route
+      metadata:
+        name: lab-guide
+        namespace: "{{ meta.name }}"
+      spec:
+        port:
+          targetPort: 8080-tcp
+        to:
+          kind: Service
+          name: lab-guide
+          weight: 100

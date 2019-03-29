@@ -1,2 +1,4 @@
 ---
 # defaults file for student
+
+lab_guide_image: quay.io/jduncan/lab-guide:latest

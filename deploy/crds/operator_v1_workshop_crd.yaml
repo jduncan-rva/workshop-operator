@@ -11,6 +11,8 @@ spec:
     plural: workshops
     singular: workshop
   scope: Namespaced
+  kind: NumberOfStudents
+  kind: workshopName
   subresources:
     status: {}
   version: v1
@@ -18,3 +20,8 @@ spec:
   - name: v1
     served: true
     storage: true
+  additionalPrinterColumns:
+  - name: Workshop
+    type: string
+    description: Associated student workshop
+    JSONPath: .spec.workshopName

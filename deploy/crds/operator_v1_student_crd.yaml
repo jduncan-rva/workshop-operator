@@ -19,14 +19,8 @@ spec:
     served: true
     storage: true
   kind: workshopName
-  kind: studentName
-  kind: emailAddress
   additionalPrinterColumns:
   - name: Workshop
     type: string
     description: Associated student workshop
     JSONPath: .spec.workshopName
-  - name: Student
-    type: string
-    description: Student name
-    JSONPath: .spec.studentName
