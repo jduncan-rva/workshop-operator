@@ -1,7 +1,10 @@
 apiVersion: operator.redhatgov.io/v1
 kind: Student
 metadata:
-  name: example-student
+  name: student1
 spec:
   # Add fields here
-  size: 3
+  size: 1
+  workshopName: TestLab
+  studentName: John Doe
+  emailAddress: bob@company.com
