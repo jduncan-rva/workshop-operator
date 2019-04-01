@@ -1,0 +1,5 @@
+apiVersion: operator.redhatgov.io/v1
+kind: Student
+metadata:
+  name: example-student
+spec: null
