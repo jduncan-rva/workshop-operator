@@ -3,3 +3,8 @@
   group: operator.redhatgov.io
   kind: Workshop
   role: /opt/ansible/roles/workshop
+
+- version: v1
+  group: operator.redhatgov.io
+  kind: Student
+  role: /opt/ansible/roles/student
