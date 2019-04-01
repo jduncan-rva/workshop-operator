@@ -1,2 +1,15 @@
 ---
-# tasks file for workshop
+
+- name: Create project for global workshop content
+  k8s:
+    api_version: v1
+    kind: Namespace
+    name: "{{ meta.name }}"
+
+- name: Create students for workshop
+  k8s:
+    definition: "{{ lookup('template', 'student.yaml.j2') | from_yaml }}"
+  vars:
+    student_number: "{{ item }}"
+  loop: "{{ range(1, num_students + 1) | list }}"
+  when: num_students is defined

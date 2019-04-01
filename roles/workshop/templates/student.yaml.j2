@@ -1,0 +1,7 @@
+apiVersion: operator.redhatgov.io/v1
+kind: Student
+metadata:
+  name: "{{ 'student%02d' | format(student_number) }}"
+  namespace: "{{ meta.namespace }}"
+spec:
+  workshopName: "{{ meta.name }}"
