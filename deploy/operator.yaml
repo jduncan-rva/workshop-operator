@@ -16,7 +16,7 @@ spec:
       containers:
         - name: operator
           # Replace this with the built image name
-          image: "quay.io/jhocutt/workshop-operator:v0.1"
+          image: "{{ OPERATOR_IMAGE_PATH }}"
           imagePullPolicy: "Always"
           volumeMounts:
             - mountPath: /tmp/ansible-operator/runner

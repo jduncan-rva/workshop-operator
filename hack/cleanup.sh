@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-PROJECT_NAME=${1:-workshop-operator}
+PROJECT_NAME="workshop-operator"
 ROOT_DIR="$( dirname "$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )" )"
 
 read -p "This script assumes you are already logged into OpenShift as a cluster admin. Would you like to continue? [y/n] " -n 1 -r
-echo    # (optional) move to a new line
+echo
 if [[ $REPLY =~ ^[Yy]$ ]] ; then
     oc delete deployment workshop-operator -n ${PROJECT_NAME}
     oc delete clusterrolebinding workshop-operator
