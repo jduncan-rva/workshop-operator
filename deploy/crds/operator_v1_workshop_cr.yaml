@@ -3,5 +3,4 @@ kind: Workshop
 metadata:
   name: example-workshop
 spec:
-  # Add fields here
-  size: 3
+  numStudents: 3

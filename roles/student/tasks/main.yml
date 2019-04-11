@@ -1,0 +1,7 @@
+---
+
+- name: Create project for {{ meta.name }}
+  k8s:
+    api_version: v1
+    kind: Namespace
+    name: "{{ workshop_name }}-{{ meta.name }}"

@@ -14,10 +14,13 @@ spec:
     spec:
       serviceAccountName: workshop-operator
       containers:
-        - name: workshop-operator
+        - name: operator
           # Replace this with the built image name
-          image: "{{ REPLACE_IMAGE }}"
-          imagePullPolicy: "{{ pull_policy|default('Always') }}"
+          image: "{{ OPERATOR_IMAGE_PATH }}"
+          imagePullPolicy: "Always"
+          volumeMounts:
+            - mountPath: /tmp/ansible-operator/runner
+              name: runner
           env:
             - name: WATCH_NAMESPACE
               value: ""
@@ -27,3 +30,6 @@ spec:
                   fieldPath: metadata.name
             - name: OPERATOR_NAME
               value: "workshop-operator"
+      volumes:
+        - name: runner
+          emptyDir: {}

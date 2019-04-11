@@ -2,4 +2,9 @@
 - version: v1
   group: operator.redhatgov.io
   kind: Workshop
-  role: /opt/ansible/roles/workshop
+  playbook: /opt/ansible/playbooks/workshop.yaml
+
+- version: v1
+  group: operator.redhatgov.io
+  kind: Student
+  playbook: /opt/ansible/playbooks/student.yaml
