@@ -1,7 +1,82 @@
 ---
 
+- name: set local facts
+  set_fact:
+    workshop_full_name: "{{ workshop_name }}-{{ meta.name }}"
+    lab_guide_image: "quay.io/jduncan/operator-workshop-lab-guide-{{ workshop_name }}"
+
 - name: Create project for {{ meta.name }}
   k8s:
     api_version: v1
     kind: Namespace
-    name: "{{ workshop_name }}-{{ meta.name }}"
+    name: "{{ workshop_full_name }}"
+
+- name: Create lab guide deployment
+  k8s:
+    definition:
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: lab-guide
+        namespace: "{{ workshop_full_name }}"
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            name: lab-guide
+        template:
+          metadata:
+            labels:
+              name: lab-guide
+          spec:
+            containers:
+            - name: lab-guide
+              image: "{{ lab_guide_image }}"
+              imagePullPolicy: Always
+              env:
+              - name: STUDENT_NAME
+                value: "{{ meta.name }}"
+              - name: PROJECT_NAME
+                valueFrom:
+                  fieldRef:
+                    fieldPath: metadata.namespace
+              - name: OPERATOR_NAME
+                value: "{{ workshop_full_name }}"
+              ports:
+              - containerPort: 8080
+                protocol: TCP
+            terminationGracePeriodSeconds: 5
+
+- name: Create lab guide service
+  k8s:
+    definition:
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: lab-guide
+        namespace: "{{ workshop_full_name }}"
+      spec:
+        ports:
+        - name: 8080-tcp
+          port: 8080
+          protocol: TCP
+          targetPort: 8080
+        selector:
+          name: lab-guide
+        type: ClusterIP
+
+- name: Create lab guide route
+  k8s:
+    definition:
+      apiVersion: route.openshift.io/v1
+      kind: Route
+      metadata:
+        name: lab-guide
+        namespace: "{{ workshop_full_name }}"
+      spec:
+        port:
+          targetPort: 8080-tcp
+        to:
+          kind: Service
+          name: lab-guide
+          weight: 100

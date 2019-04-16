@@ -1,6 +1,6 @@
 apiVersion: operator.redhatgov.io/v1
 kind: Workshop
 metadata:
-  name: example-workshop
+  name: example_workshop
 spec:
   numStudents: 3
