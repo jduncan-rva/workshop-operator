@@ -11,5 +11,5 @@ if [[ -z "${OPERATOR_IMAGE_PATH}" ]]; then
     exit 1
 fi
 
-sudo operator-sdk build ${OPERATOR_IMAGE_PATH}
-sudo docker push ${OPERATOR_IMAGE_PATH}
+operator-sdk build ${OPERATOR_IMAGE_PATH}
+docker push ${OPERATOR_IMAGE_PATH}

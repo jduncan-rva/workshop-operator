@@ -17,18 +17,18 @@ fi
 read -p "This script assumes you are already logged into OpenShift as a cluster admin. Would you like to continue? [y/n] " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]] ; then
-    oc new-project ${PROJECT_NAME}
+    kubectl create ns ${PROJECT_NAME}
 
-    oc create -f ${ROOT_DIR}/deploy/crds/operator_v1_workshop_crd.yaml
-    oc create -f ${ROOT_DIR}/deploy/crds/operator_v1_student_crd.yaml
+    kubectl create -f ${ROOT_DIR}/deploy/crds/operator_v1_workshop_crd.yaml
+    kubectl create -f ${ROOT_DIR}/deploy/crds/operator_v1_student_crd.yaml
 
-    oc create -f ${ROOT_DIR}/deploy/service_account.yaml -n ${PROJECT_NAME}
-    oc create -f ${ROOT_DIR}/deploy/role.yaml
-    oc create -f ${ROOT_DIR}/deploy/role_binding.yaml
+    kubectl create -f ${ROOT_DIR}/deploy/service_account.yaml -n ${PROJECT_NAME}
+    kubectl create -f ${ROOT_DIR}/deploy/role.yaml -n ${PROJECT_NAME}
+    kubectl create -f ${ROOT_DIR}/deploy/role_binding.yaml -n ${PROJECT_NAME}
 
     sed "s|{{ OPERATOR_IMAGE_PATH }}|${OPERATOR_IMAGE_PATH}|" ${ROOT_DIR}/deploy/operator.yaml > /tmp/${PROJECT_NAME}-operator.yaml
 
-    oc create -f /tmp/${PROJECT_NAME}-operator.yaml -n ${PROJECT_NAME}
+    kubectl create -f /tmp/${PROJECT_NAME}-operator.yaml -n ${PROJECT_NAME}
 
     rm -f /tmp/${PROJECT_NAME}-operator.yaml
 fi
